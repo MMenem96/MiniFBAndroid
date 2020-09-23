@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.faculty.minifbapp">
-    
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +13,7 @@
         android:theme="@style/MiniFBTheme">
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/sign_up_text" />
+            android:label="@string/sign_up_activity_text" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/login_activity_text">
