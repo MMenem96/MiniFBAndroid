@@ -5,9 +5,10 @@
     <string name="password_text">Password</string>
     <string name="login_text">Login</string>
     <string name="dnt_have_an_acc_text">You don\'t have an account? Sign up now!</string>
-    <string name="main_text">Main Activity</string>
+    <string name="home_text">Home Activity</string>
     <string name="sign_up_activity_text">Sign Up Activity</string>
     <string name="name_text">Name</string>
     <string name="sign_up_text">Sign Up</string>
     <string name="already_have_an_acc_text">Already have an account? Log in!</string>
+    <string name="post_details_text">Post Details</string>
 </resources>
