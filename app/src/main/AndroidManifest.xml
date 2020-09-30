@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/MiniFBTheme">
         <activity
+            android:name=".AddPostActivity"
+            android:label="@string/add_new_post_text" />
+        <activity
             android:name=".PostDetailsActivity"
             android:label="@string/post_details_text" />
         <activity
@@ -28,7 +31,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/home_text" />
+            android:label="@string/home_text"
+            android:launchMode="singleTop" />
     </application>
 
 </manifest>

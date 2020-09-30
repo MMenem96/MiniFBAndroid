@@ -3,35 +3,45 @@ package com.faculty.minifbapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final int ADD_POST_CODE = 2;
     private TextView tvWelcome;
     private String email, name;
     private Button btnLogout;
     private RecyclerView rvPosts;
     private List<Post> posts = new ArrayList<>();
     private PostsAdapter postsAdapter;
+    private FloatingActionButton fabAddNewPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-//        getUserDetailsFromCache();
+        getUserDetailsFromCache();
         populateViews();
     }
 
     private void populateViews() {
-//        tvWelcome.setText("Welcome " + name + "\n" + "Your email is " + email);
+        tvWelcome.setText(String.format(Locale.getDefault(), "%s %s", "Welcome", name));
     }
 
     private void getUserDetailsFromCache() {
@@ -44,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        tvWelcome = findViewById(R.id.tv_welcome);
+        fabAddNewPost = findViewById(R.id.fb_add_post);
+        fabAddNewPost.setOnClickListener(this);
         rvPosts = findViewById(R.id.rv_posts);
         posts.add(new Post(1, "HBD Ya Moniem", "29/9/2020", new User("Sheko")));
         posts.add(new Post(2, "Our Second Post", "26/9/2020", new User("Youssef")));
@@ -56,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         postsAdapter = new PostsAdapter(posts);
         rvPosts.setAdapter(postsAdapter);
 
-//        btnLogout = findViewById(R.id.btn_logout);
-//        btnLogout.setOnClickListener(this);
-//        tvWelcome = findViewById(R.id.tv_welcome);
     }
 
     private void openLoginActivity() {
@@ -71,12 +81,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-//        if (v.getId() == R.id.btn_logout) {//Clear Shared Prefs
-//            //Open LoginActivity
-//            //Finish MainActivity
-//            clearCache();
-//            openLoginActivity();
-//            finish();
-//        }
+        if (v.getId() == R.id.fb_add_post) {
+            startActivityForResult(new Intent(MainActivity.this, AddPostActivity.class), ADD_POST_CODE);
+        }
+    }
+
+
+    //Inflation of menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    //Click listener of menu items
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                //Clear Shared Prefs
+                // Open LoginActivity
+                //Finish MainActivity
+                clearCache();
+                openLoginActivity();
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == RESULT_OK && requestCode == ADD_POST_CODE) {
+            posts.add((Post) intent.getSerializableExtra("post"));
+            postsAdapter.setPosts(posts);
+        }
     }
 }
+
+

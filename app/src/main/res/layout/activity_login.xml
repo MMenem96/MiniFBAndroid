@@ -38,7 +38,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="@dimen/dimen_20dp"
             android:layout_marginEnd="@dimen/dimen_25dp"
-            android:background="@color/colorOrange"
+            android:background="@drawable/orange_rectangular_shape"
             android:text="@string/login_text"
             android:textColor="@color/colorWhite" />
 

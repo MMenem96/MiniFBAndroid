@@ -61,4 +61,9 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvPostBody = view.findViewById(R.id.tv_post_body);
         }
     }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+        notifyDataSetChanged();
+    }
 }

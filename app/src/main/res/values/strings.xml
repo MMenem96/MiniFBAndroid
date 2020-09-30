@@ -11,4 +11,9 @@
     <string name="sign_up_text">Sign Up</string>
     <string name="already_have_an_acc_text">Already have an account? Log in!</string>
     <string name="post_details_text">Post Details</string>
+    <string name="add_new_post_text">New Post</string>
+    <string name="logout_text">Logout</string>
+    <string name="what_is_in_ur_mind_text">What is in your mind?</string>
+    <string name="post_text">Post</string>
+    <string name="empty_post_body">Empty body</string>
 </resources>
