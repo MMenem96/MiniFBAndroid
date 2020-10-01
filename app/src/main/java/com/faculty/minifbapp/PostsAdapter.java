@@ -34,13 +34,10 @@ public class PostsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         ((CustomViewHolder) holder).tvPostBody.setText(posts.get(position).getBody());
         ((CustomViewHolder) holder).tvPostCreatedDate.setText(posts.get(position).getCreatedDate());
         ((CustomViewHolder) holder).tvUserName.setText(posts.get(position).getUser().getUserName());
-        ((CustomViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(), PostDetailsActivity.class);
-                intent.putExtra("post", posts.get(position));
-                holder.itemView.getContext().startActivity(intent);
-            }
+        ((CustomViewHolder) holder).itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), PostDetailsActivity.class);
+            intent.putExtra("post", posts.get(position));
+            holder.itemView.getContext().startActivity(intent);
         });
 
     }

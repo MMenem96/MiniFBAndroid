@@ -16,4 +16,8 @@
     <string name="what_is_in_ur_mind_text">What is in your mind?</string>
     <string name="post_text">Post</string>
     <string name="empty_post_body">Empty body</string>
+    <string name="smthing_went_wrong">Something Went Wrong</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="invalid_password">Invalid Password</string>
+    <string name="invalid_name">Invalid Name</string>
 </resources>

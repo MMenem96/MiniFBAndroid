@@ -8,7 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int ADD_POST_CODE = 2;
     private TextView tvWelcome;
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Post> posts = new ArrayList<>();
     private PostsAdapter postsAdapter;
     private FloatingActionButton fabAddNewPost;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initViews();
         getUserDetailsFromCache();
-        populateViews();
+        getAllPosts();
+    }
+
+    private void getAllPosts() {
+        //Fetch all posts from our REST API
+        showParent(View.GONE);
+        Call<List<Post>> call = ServiceGenerator.getMiniFBAPI().getAllPosts();
+        call.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                showParent(View.VISIBLE);
+                if (response.isSuccessful()) {
+                    //Assign posts returned from REST API to our variable posts
+                    posts = response.body();
+                    //Send the posts to our adapter then assign the adapter to our recyclerview
+                    populateViews();
+                } else {
+                    Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                showParent(View.VISIBLE);
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, getString(R.string.smthing_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void populateViews() {
         tvWelcome.setText(String.format(Locale.getDefault(), "%s %s", "Welcome", name));
+        postsAdapter.setPosts(posts);
+        rvPosts.setAdapter(postsAdapter);
     }
 
     private void getUserDetailsFromCache() {
@@ -54,21 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        progressBar = findViewById(R.id.progress_bar);
         tvWelcome = findViewById(R.id.tv_welcome);
         fabAddNewPost = findViewById(R.id.fb_add_post);
         fabAddNewPost.setOnClickListener(this);
         rvPosts = findViewById(R.id.rv_posts);
-        posts.add(new Post(1, "HBD Ya Moniem", "29/9/2020", new User("Sheko")));
-        posts.add(new Post(2, "Our Second Post", "26/9/2020", new User("Youssef")));
-        posts.add(new Post(3, "Our Third Post", "25/9/2020", new User("Ebrahim")));
-        posts.add(new Post(4, "Our Fourth Post", "24/9/2020", new User("Mohamed")));
-        posts.add(new Post(5, "Our Fifth Post", "23/9/2020", new User("Waleed")));
-        posts.add(new Post(6, "Our 6th Post", "23/9/2020", new User("Nour")));
-        posts.add(new Post(7, "Our 7th Post", "23/9/2020", new User("Shourok")));
-        posts.add(new Post(8, "Our 7th Post", "23/9/2020", new User("Moniem")));
         postsAdapter = new PostsAdapter(posts);
-        rvPosts.setAdapter(postsAdapter);
-
     }
 
     private void openLoginActivity() {
@@ -98,15 +125,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Click listener of menu items
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                //Clear Shared Prefs
-                // Open LoginActivity
-                //Finish MainActivity
-                clearCache();
-                openLoginActivity();
-                finish();
-                break;
+        if (item.getItemId() == R.id.action_logout) {
+            //Clear Shared Prefs
+            // Open LoginActivity
+            //Finish MainActivity
+            clearCache();
+            openLoginActivity();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -120,6 +145,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             postsAdapter.setPosts(posts);
         }
     }
+
+
+    private void showParent(int visibility) {
+        if (visibility == View.GONE) {
+            //Hide all the views except progressbar
+            progressBar.setVisibility(View.VISIBLE);
+            rvPosts.setVisibility(View.GONE);
+            fabAddNewPost.setVisibility(View.GONE);
+            tvWelcome.setVisibility(View.GONE);
+        } else {
+            //Show all the views except progressbar
+            progressBar.setVisibility(View.GONE);
+            rvPosts.setVisibility(View.VISIBLE);
+            fabAddNewPost.setVisibility(View.VISIBLE);
+            tvWelcome.setVisibility(View.VISIBLE);
+        }
+    }
+
 }
 
 

@@ -28,6 +28,11 @@ public class Post implements Serializable {
     public Post() {
     }
 
+    public Post(String body, User user) {
+        this.body = body;
+        this.user = user;
+    }
+
     public Post(int id, String body, String createdDate, User user) {
         this.id = id;
         this.body = body;

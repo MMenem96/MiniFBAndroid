@@ -14,6 +14,30 @@ public class User implements Serializable {
     @Expose
     private String userName;
 
+    @SerializedName("password")
+    @Expose
+    private String password;
+
+    @SerializedName("email")
+    @Expose
+    private String email;
+
+    public User(int id) {
+        this.id = id;
+    }
+
+    public User(String password, String email) {
+        this.password = password;
+        this.email = email;
+    }
+
+
+    public User(String userName, String password, String email) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+    }
+
     public User(String userName) {
         this.userName = userName;
     }
@@ -32,5 +56,21 @@ public class User implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
